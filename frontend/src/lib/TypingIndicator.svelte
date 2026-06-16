@@ -9,7 +9,13 @@
 </script>
 
 <div class="row">
-  <div class="avatar" style:background={bot.color}>{initial}</div>
+  <div class="avatar" style:--accent={bot.color}>
+    {#if bot.avatarUrl}
+      <img src={bot.avatarUrl} alt={bot.name} />
+    {:else}
+      <span>{initial}</span>
+    {/if}
+  </div>
   <div class="bubble" style:--accent={bot.color}>
     <span class="dot"></span>
     <span class="dot"></span>
@@ -20,35 +26,47 @@
 <style>
   .row {
     display: flex;
-    gap: 0.6rem;
-    align-items: flex-end;
+    gap: 0.72rem;
+    align-items: flex-start;
   }
   .avatar {
     flex: 0 0 auto;
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 2.35rem;
+    height: 2.35rem;
     border-radius: 50%;
     display: grid;
     place-items: center;
+    overflow: hidden;
+    background: var(--accent);
     color: #fff;
-    font-weight: 700;
-    font-size: 0.9rem;
+    font-family: var(--display-font, system-ui);
+    font-weight: 800;
+    font-size: 0.95rem;
+    border: 2px solid rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 22px rgba(0, 63, 115, 0.14);
+  }
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .bubble {
-    background: var(--surface-alt, #eef3f8);
-    border: 1px solid var(--border, #d3dde8);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 12px 12px 12px;
-    padding: 0.7rem 0.85rem;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 251, 253, 0.94)),
+      color-mix(in srgb, var(--accent) 7%, white);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border, #d3dde8));
+    border-radius: 6px 20px 20px 20px;
+    padding: 0.82rem 0.98rem;
     display: flex;
     gap: 0.3rem;
     align-items: center;
+    box-shadow: 0 12px 30px rgba(0, 63, 115, 0.08);
   }
   .dot {
     width: 0.45rem;
     height: 0.45rem;
     border-radius: 50%;
-    background: #94a3b8;
+    background: color-mix(in srgb, var(--accent) 45%, #94a3b8);
     animation: blink 1.2s infinite ease-in-out;
   }
   .dot:nth-child(2) { animation-delay: 0.2s; }

@@ -1,17 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap');
+
 :root {
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color-scheme: light;
 
   /* Swedish-flag inspired palette */
   --se-blue: #006aa7;
-  --se-blue-dark: #00457a;
+  --se-blue-dark: #003f73;
+  --se-blue-ink: #082f49;
   --se-yellow: #fecc02;
-  --page-bg: #e9eef5;
+  --se-yellow-soft: #fff4b8;
+  --page-bg: #eaf1f8;
   --surface: #ffffff;
-  --surface-alt: #eef3f8;
-  --border: #d3dde8;
-  --text: #1b2a38;
-  --text-muted: #5b6b7b;
+  --surface-alt: #f3f7fb;
+  --border: #d8e4ee;
+  --text: #172636;
+  --text-muted: #637487;
+  --display-font: 'Inter Tight', 'IBM Plex Sans', system-ui, sans-serif;
+  --shadow-soft: 0 24px 80px rgba(0, 63, 115, 0.16);
 }
 
 * {
@@ -23,8 +29,12 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: var(--page-bg);
+  background:
+    radial-gradient(circle at top left, rgba(254, 204, 2, 0.28), transparent 32rem),
+    radial-gradient(circle at 85% 10%, rgba(0, 106, 167, 0.18), transparent 28rem),
+    linear-gradient(135deg, #f8fbfd 0%, var(--page-bg) 48%, #dce9f3 100%);
   color: var(--text);
+  font-feature-settings: 'ss01' on, 'cv01' on;
 }
 
 #app {

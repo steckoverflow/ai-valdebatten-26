@@ -6,6 +6,7 @@ export interface Bot {
   name: string
   persona: string
   manifesto: string
+  avatarUrl?: string
   color: string
 }
 

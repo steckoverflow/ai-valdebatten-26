@@ -30,6 +30,7 @@ type Bot struct {
 	Name      string `json:"name"`
 	Persona   string `json:"persona"`
 	Manifesto string `json:"manifesto"`
+	AvatarURL string `json:"avatarUrl,omitempty"`
 	Color     string `json:"color"` // e.g. "#e63946", used by the UI for the bubble
 }
 

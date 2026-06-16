@@ -31,11 +31,12 @@
       </span>
     </div>
     <div class="head-text">
+      <div class="eyebrow">Sveriges digitala valdebatt</div>
       <div class="topic">
-        {debate.topic || 'Waiting for the next debate…'}
+        {debate.topic || 'Väntar på nästa debatt…'}
       </div>
       <div class="meta">
-        next topic in <Countdown endsAt={debate.endsAt} />
+        Nästa ämne om <Countdown endsAt={debate.endsAt} />
       </div>
     </div>
   </header>
@@ -50,7 +51,7 @@
 
   <section class="chat" bind:this={scroller}>
     {#if debate.messages.length === 0 && !debate.typingBot}
-      <p class="empty">The debate is about to begin…</p>
+      <p class="empty">Debatten startar strax…</p>
     {/if}
     {#each debate.messages as m (m.id)}
       <ChatMessage message={m} bot={debate.bot(m.botId)} />
@@ -63,104 +64,187 @@
 
 <style>
   main {
-    width: min(960px, 100%);
-    height: 100dvh;
-    margin: 0 auto;
+    width: min(1040px, calc(100% - 2rem));
+    height: min(100dvh - 2rem, 980px);
+    margin: 1rem auto;
     display: flex;
     flex-direction: column;
-    background: var(--surface);
-    box-shadow: 0 0 40px rgba(0, 69, 122, 0.08);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--surface) 86%, transparent);
+    border: 1px solid rgba(255, 255, 255, 0.78);
+    border-radius: 28px;
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(18px);
   }
 
   header {
-    padding: 0;
-    border-bottom: 3px solid var(--se-yellow);
-    background: var(--surface);
+    position: relative;
+    padding: 0 0 1rem;
+    border-bottom: 1px solid rgba(0, 106, 167, 0.16);
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 247, 252, 0.9)),
+      linear-gradient(90deg, var(--se-blue) 0 24%, var(--se-yellow) 24% 32%, var(--se-blue) 32%);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--se-blue) 0 24%, var(--se-yellow) 24% 32%, var(--se-blue) 32%);
   }
   .banner {
     display: block;
     width: 100%;
     height: auto;
+    max-height: 210px;
+    object-fit: cover;
   }
   .statusbar {
     display: flex;
     justify-content: flex-end;
-    padding: 0.6rem 1rem 0;
+    padding: 0.9rem clamp(1rem, 2.5vw, 1.8rem) 0;
   }
   .status {
-    font-size: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--display-font);
+    font-size: 0.68rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.12em;
     color: var(--text-muted);
-    border: 1px solid var(--border);
+    border: 1px solid rgba(99, 116, 135, 0.22);
     border-radius: 999px;
-    padding: 0.05rem 0.5rem;
+    padding: 0.24rem 0.64rem;
+    background: rgba(255, 255, 255, 0.72);
+  }
+  .status::before {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: #94a3b8;
   }
   .status.on {
     color: #15803d;
-    border-color: #86efac;
-    background: #f0fdf4;
+    border-color: rgba(34, 197, 94, 0.28);
+    background: rgba(240, 253, 244, 0.9);
+  }
+  .status.on::before {
+    background: #22c55e;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.14);
   }
   .head-text {
-    padding: 0.4rem 1rem 0.8rem;
-    border-left: 4px solid var(--se-blue);
-    margin: 0 1rem;
+    position: relative;
+    padding: 0.75rem clamp(1rem, 2.5vw, 1.8rem) 0.45rem;
+    margin: 0;
+  }
+  .head-text::before {
+    content: '';
+    position: absolute;
+    left: clamp(1rem, 2.5vw, 1.8rem);
+    top: 0.8rem;
+    width: 3.7rem;
+    height: 0.28rem;
+    border-radius: 999px;
+    background: var(--se-yellow);
+  }
+  .eyebrow {
+    margin-top: 0.75rem;
+    font-family: var(--display-font);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--se-blue-dark);
   }
   .topic {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--se-blue);
+    max-width: 22ch;
+    margin-top: 0.24rem;
+    font-family: var(--display-font);
+    font-size: clamp(1.35rem, 4vw, 2.45rem);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 0.96;
+    color: var(--se-blue-ink);
   }
   .meta {
-    margin-top: 0.25rem;
-    font-size: 0.8rem;
+    margin-top: 0.65rem;
+    font-size: 0.88rem;
+    font-weight: 500;
     color: var(--text-muted);
   }
 
   @media (max-width: 640px) {
     .statusbar {
-      padding: 0.45rem 0.8rem 0;
+      padding: 0.65rem 0.9rem 0;
     }
     .head-text {
-      padding: 0.35rem 0.8rem 0.6rem;
-      margin: 0 0.8rem;
+      padding: 0.65rem 0.9rem 0.35rem;
+    }
+    .head-text::before {
+      left: 0.9rem;
     }
     .topic {
-      font-size: 1rem;
+      max-width: 100%;
     }
   }
 
   .roster {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
-    padding: 0.6rem 1rem;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface-alt);
+    gap: 0.5rem;
+    padding: 0.85rem clamp(1rem, 2.5vw, 1.8rem);
+    border-bottom: 1px solid rgba(0, 106, 167, 0.12);
+    background: rgba(243, 247, 251, 0.76);
   }
   .chip {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--c);
-    background: var(--surface);
-    border: 1px solid var(--c);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: color-mix(in srgb, var(--c) 82%, #082f49);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.62)),
+      color-mix(in srgb, var(--c) 12%, white);
+    border: 1px solid color-mix(in srgb, var(--c) 42%, white);
     border-radius: 999px;
-    padding: 0.1rem 0.55rem;
+    padding: 0.26rem 0.72rem;
+    box-shadow: 0 8px 20px rgba(0, 63, 115, 0.07);
     cursor: help;
   }
 
   .chat {
     flex: 1;
     overflow-y: auto;
-    padding: 1rem;
+    padding: clamp(1rem, 2.5vw, 1.65rem);
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
+    gap: 0.9rem;
     scroll-behavior: smooth;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
+      repeating-linear-gradient(135deg, rgba(0, 106, 167, 0.055) 0 1px, transparent 1px 18px);
   }
   .empty {
     margin: auto;
+    padding: 1rem 1.25rem;
     color: var(--text-muted);
-    font-style: italic;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.74);
+    border: 1px solid rgba(0, 106, 167, 0.12);
+    border-radius: 18px;
+  }
+
+  @media (max-width: 720px) {
+    main {
+      width: 100%;
+      height: 100dvh;
+      margin: 0;
+      border-width: 0;
+      border-radius: 0;
+    }
+    .banner {
+      max-height: 150px;
+    }
   }
 </style>

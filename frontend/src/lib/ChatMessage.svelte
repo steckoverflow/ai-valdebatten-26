@@ -9,7 +9,13 @@
 </script>
 
 <div class="row">
-  <div class="avatar" style:background={color}>{initial}</div>
+  <div class="avatar" style:--accent={color}>
+    {#if bot?.avatarUrl}
+      <img src={bot.avatarUrl} alt={name} />
+    {:else}
+      <span>{initial}</span>
+    {/if}
+  </div>
   <div class="bubble" style:--accent={color}>
     <div class="name" style:color={color}>{name}</div>
     <div class="text">{message.text}</div>
@@ -19,42 +25,72 @@
 <style>
   .row {
     display: flex;
-    gap: 0.6rem;
-    align-items: flex-end;
-    animation: pop 160ms ease-out;
+    gap: 0.72rem;
+    align-items: flex-start;
+    animation: pop 180ms ease-out;
   }
   .avatar {
     flex: 0 0 auto;
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 2.35rem;
+    height: 2.35rem;
     border-radius: 50%;
     display: grid;
     place-items: center;
+    overflow: hidden;
+    background: var(--accent);
     color: #fff;
-    font-weight: 700;
-    font-size: 0.9rem;
+    font-family: var(--display-font, system-ui);
+    font-weight: 800;
+    font-size: 0.95rem;
+    border: 2px solid rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 22px rgba(0, 63, 115, 0.14);
+  }
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .bubble {
-    background: var(--surface-alt, #eef3f8);
-    border: 1px solid var(--border, #d3dde8);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 12px 12px 12px;
-    padding: 0.5rem 0.75rem;
-    max-width: min(80%, 46ch);
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 251, 253, 0.94)),
+      color-mix(in srgb, var(--accent) 7%, white);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border, #d3dde8));
+    border-radius: 6px 20px 20px 20px;
+    padding: 0.68rem 0.88rem 0.76rem;
+    max-width: min(82%, 54ch);
+    box-shadow: 0 12px 30px rgba(0, 63, 115, 0.08);
+  }
+  .bubble::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8rem;
+    bottom: 0.8rem;
+    width: 3px;
+    border-radius: 999px;
+    background: var(--accent);
   }
   .name {
-    font-size: 0.75rem;
-    font-weight: 700;
-    margin-bottom: 0.15rem;
+    font-family: var(--display-font, system-ui);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.22rem;
   }
   .text {
     color: var(--text, #1b2a38);
-    line-height: 1.4;
+    line-height: 1.48;
     white-space: pre-wrap;
     word-wrap: break-word;
   }
+  @media (max-width: 640px) {
+    .bubble {
+      max-width: calc(100% - 3.1rem);
+    }
+  }
   @keyframes pop {
-    from { opacity: 0; transform: translateY(6px); }
+    from { opacity: 0; transform: translateY(8px) scale(0.985); }
     to { opacity: 1; transform: translateY(0); }
   }
 </style>
