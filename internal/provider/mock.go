@@ -11,7 +11,8 @@ import (
 // MockProvider fabricates plausible debate lines without any external service.
 // It exists so we can build and demo the entire system before wiring up a real
 // LLM. It is deliberately simple: it stitches a conversational opener together
-// with a generic "stance" sentence, and fakes a human-like typing delay.
+// with a sentence from the speaker's configured platform, and fakes a human-like
+// typing delay.
 //
 // It implements provider.Provider.
 type MockProvider struct{}
@@ -21,31 +22,27 @@ func NewMock() *MockProvider { return &MockProvider{} }
 
 // openers are used for the first message of a cycle (no prior history).
 var openers = []string{
-	"On the question of %q, my position is simple.",
-	"Let me be direct about %q.",
-	"When it comes to %q, we cannot afford to hesitate.",
-	"Here is how I see %q.",
+	"När det gäller %q är min utgångspunkt enkel.",
+	"Låt mig vara tydlig om %q.",
+	"I frågan om %q har vi inte råd att tveka.",
+	"Så här ser jag på %q.",
 }
 
 // rebuttals reference the previous speaker by name (%s is their name).
 var rebuttals = []string{
-	"I have to disagree with %s here.",
-	"%s makes a fair point, but it misses something.",
-	"With respect to %s, that argument doesn't hold up.",
-	"Building on what %s said —",
-	"%s is half right, and half wrong.",
+	"Jag håller inte med %s här.",
+	"%s har en poäng, men missar något viktigt.",
+	"Med respekt för %s håller inte det argumentet hela vägen.",
+	"Om vi bygger vidare på det %s sa:",
+	"%s har delvis rätt, men också delvis fel.",
 }
 
-// stances are generic debate-flavored payload sentences.
-var stances = []string{
-	"The real cost always falls on ordinary people, and we ignore that at our peril.",
-	"We have to weigh ambition against what taxpayers can actually bear.",
-	"Future generations will judge us by whether we acted boldly today.",
-	"Freedom means letting people decide for themselves, not mandating outcomes.",
-	"The evidence from other countries is clear if we bother to look at it.",
-	"This is about priorities, and right now ours are upside down.",
-	"A responsible society plans for the long term, not the next election.",
-	"Markets solve this better than any committee ever could.",
+// fallbackStances are used only when a bot has no configured manifesto/persona.
+var fallbackStances = []string{
+	"Det viktigaste är att politiken fungerar i människors vardag.",
+	"Vi måste väga ambitioner mot vad samhället faktiskt klarar av.",
+	"Det här handlar om prioriteringar och ansvar för framtiden.",
+	"En ansvarsfull politik måste hålla även efter nästa val.",
 }
 
 // Generate produces a fake response. It respects ctx cancellation so that a
@@ -65,7 +62,7 @@ func (m *MockProvider) Generate(ctx context.Context, req Request) (Response, err
 		fmt.Fprintf(&b, pick(rebuttals), prevName)
 	}
 	b.WriteString(" ")
-	b.WriteString(pick(stances))
+	b.WriteString(stanceFor(req))
 
 	text := b.String()
 
@@ -73,6 +70,36 @@ func (m *MockProvider) Generate(ctx context.Context, req Request) (Response, err
 		Text:       text,
 		ThinkDelay: typingDelay(text),
 	}, nil
+}
+
+// stanceFor lets the configured bot platform shape mock responses. This keeps
+// the demo aligned with the roster without hard-coding party IDs here.
+func stanceFor(req Request) string {
+	if candidates := sentenceCandidates(req.Speaker.Manifesto); len(candidates) > 0 {
+		return pick(candidates)
+	}
+	if candidates := sentenceCandidates(req.Speaker.Persona); len(candidates) > 0 {
+		return pick(candidates)
+	}
+	return pick(fallbackStances)
+}
+
+func sentenceCandidates(text string) []string {
+	text = strings.TrimSpace(text)
+	if text == "" {
+		return nil
+	}
+
+	parts := strings.Split(text, ".")
+	out := make([]string, 0, len(parts))
+	for _, part := range parts {
+		part = strings.TrimSpace(part)
+		if part == "" {
+			continue
+		}
+		out = append(out, part+".")
+	}
+	return out
 }
 
 // nameOf resolves a bot ID to its display name using the roster, falling back
