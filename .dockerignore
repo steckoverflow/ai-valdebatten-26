@@ -1,0 +1,15 @@
+# Build artifacts (rebuilt inside the image).
+bin/
+*.out
+frontend/node_modules/
+internal/web/dist/*
+!internal/web/dist/.gitkeep
+
+# VCS / OS / editor cruft.
+.git/
+.gitignore
+.DS_Store
+frontend/.vscode/
+
+# Docs.
+**/README.md

@@ -9,6 +9,11 @@
 
   onMount(() => debate.connect())
 
+  // Split the roster into the two political sides so the UI can show clearly
+  // who governs (Tidöavtalet) and who is in opposition.
+  let tido = $derived(debate.bots.filter((b) => b.bloc === 'tido'))
+  let opposition = $derived(debate.bots.filter((b) => b.bloc !== 'tido'))
+
   // Keep the chat pinned to the bottom as new messages / typing arrive.
   $effect(() => {
     // Touch reactive deps so this re-runs on change.
@@ -43,9 +48,28 @@
 
   {#if debate.bots.length}
     <section class="roster">
-      {#each debate.bots as b (b.id)}
-        <span class="chip" style:--c={b.color} title={b.manifesto}>{b.name}</span>
-      {/each}
+      <div class="bloc bloc-tido">
+        <h2 class="bloc-title">
+          <span class="bloc-dot"></span>Tidöavtalet
+          <span class="bloc-sub">Regeringen</span>
+        </h2>
+        <div class="chips">
+          {#each tido as b (b.id)}
+            <span class="chip" style:--c={b.color} title={b.manifesto}>{b.name}</span>
+          {/each}
+        </div>
+      </div>
+      <div class="bloc bloc-opposition">
+        <h2 class="bloc-title">
+          <span class="bloc-dot"></span>Oppositionen
+          <span class="bloc-sub">Utanför regeringen</span>
+        </h2>
+        <div class="chips">
+          {#each opposition as b (b.id)}
+            <span class="chip" style:--c={b.color} title={b.manifesto}>{b.name}</span>
+          {/each}
+        </div>
+      </div>
     </section>
   {/if}
 
@@ -191,13 +215,68 @@
     }
   }
 
+  @media (max-width: 560px) {
+    .roster {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .roster {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
     padding: 0.85rem clamp(1rem, 2.5vw, 1.8rem);
     border-bottom: 1px solid rgba(0, 106, 167, 0.12);
     background: rgba(243, 247, 251, 0.76);
+  }
+  .bloc {
+    border-radius: 16px;
+    padding: 0.7rem 0.8rem 0.8rem;
+    border: 1px solid transparent;
+  }
+  .bloc-tido {
+    background: rgba(0, 90, 168, 0.07);
+    border-color: rgba(0, 90, 168, 0.22);
+  }
+  .bloc-opposition {
+    background: rgba(237, 27, 52, 0.06);
+    border-color: rgba(237, 27, 52, 0.2);
+  }
+  .bloc-title {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.6rem;
+    font-family: var(--display-font);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--se-blue-ink);
+  }
+  .bloc-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    flex: 0 0 auto;
+  }
+  .bloc-tido .bloc-dot {
+    background: #005ea8;
+  }
+  .bloc-opposition .bloc-dot {
+    background: #ed1b34;
+  }
+  .bloc-sub {
+    margin-left: auto;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
   .chip {
     font-size: 0.76rem;

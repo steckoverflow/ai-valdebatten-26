@@ -6,9 +6,11 @@
   let color = $derived(bot?.color ?? '#888')
   let name = $derived(bot?.name ?? message.botId)
   let initial = $derived(name.slice(0, 1).toUpperCase())
+  let isTido = $derived(bot?.bloc === 'tido')
+  let blocLabel = $derived(isTido ? 'Tidöavtalet' : 'Opposition')
 </script>
 
-<div class="row">
+<div class="row" class:tido={isTido} class:opposition={!isTido}>
   <div class="avatar" style:--accent={color}>
     {#if bot?.avatarUrl}
       <img src={bot.avatarUrl} alt={name} />
@@ -17,7 +19,10 @@
     {/if}
   </div>
   <div class="bubble" style:--accent={color}>
-    <div class="name" style:color={color}>{name}</div>
+    <div class="name" style:color={color}>
+      {name}
+      <span class="bloc-badge">{blocLabel}</span>
+    </div>
     <div class="text">{message.text}</div>
   </div>
 </div>
@@ -28,6 +33,19 @@
     gap: 0.72rem;
     align-items: flex-start;
     animation: pop 180ms ease-out;
+  }
+  .row.opposition {
+    flex-direction: row-reverse;
+  }
+  .row.opposition .bubble {
+    border-radius: 20px 6px 20px 20px;
+  }
+  .row.opposition .bubble::before {
+    left: auto;
+    right: 0;
+  }
+  .row.opposition .name {
+    justify-content: flex-end;
   }
   .avatar {
     flex: 0 0 auto;
@@ -77,6 +95,29 @@
     font-weight: 800;
     letter-spacing: -0.01em;
     margin-bottom: 0.22rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .bloc-badge {
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.08rem 0.42rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+  }
+  .tido .bloc-badge {
+    color: #004d8c;
+    background: rgba(0, 90, 168, 0.12);
+    border-color: rgba(0, 90, 168, 0.32);
+  }
+  .opposition .bloc-badge {
+    color: #b0122a;
+    background: rgba(237, 27, 52, 0.1);
+    border-color: rgba(237, 27, 52, 0.3);
   }
   .text {
     color: var(--text, #1b2a38);

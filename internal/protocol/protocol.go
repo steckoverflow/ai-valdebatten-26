@@ -32,6 +32,10 @@ type Bot struct {
 	Manifesto string `json:"manifesto"`
 	AvatarURL string `json:"avatarUrl,omitempty"`
 	Color     string `json:"color"` // e.g. "#e63946", used by the UI for the bubble
+	// Bloc identifies which political side the bot belongs to so the UI can
+	// group and visually distinguish the parties. Expected values are
+	// "tido" (the Tidöavtalet coalition) and "opposition".
+	Bloc string `json:"bloc,omitempty"`
 }
 
 // Message is a single utterance produced by a bot during a cycle.

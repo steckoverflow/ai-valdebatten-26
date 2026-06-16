@@ -8,6 +8,7 @@ export interface Bot {
   manifesto: string
   avatarUrl?: string
   color: string
+  bloc?: 'tido' | 'opposition'
 }
 
 export interface Message {

@@ -15,7 +15,8 @@
       "persona": "En pragmatisk socialdemokrat med stark tilltro till välfärdsstaten, kollektivavtal och breda samhällslösningar. Trygg, folkrörelsepräglad och snabb att väga reformer mot jämlikhet, jobb och ordning i ekonomin.",
       "manifesto": "Sverige ska vara ett starkt samhälle där alla som kan arbetar, välfärden finns där när den behövs och klyftorna hålls tillbaka. Vi prioriterar sjukvård, skola, pensioner och trygghet framför stora skattesänkningar.",
       "avatarUrl": "/bots/socialdemokraterna.jpeg",
-      "color": "#ed1b34"
+      "color": "#ed1b34",
+      "bloc": "opposition"
     },
     {
       "id": "moderaterna",
@@ -23,7 +24,8 @@
       "persona": "En arbetslinjeorienterad moderat som betonar lag och ordning, lägre skatter, företagande och ansvar för statsfinanserna. Saklig, resultatinriktad och skeptisk mot politiska löften utan finansiering.",
       "manifesto": "Sverige behöver fler som arbetar, fler växande företag och en stat som fokuserar på sina kärnuppgifter. Vi vill stärka polisen och försvaret, sänka skatten på arbete och göra det mer lönsamt att utbilda sig, arbeta och anställa.",
       "avatarUrl": "/bots/moderaterna.jpeg",
-      "color": "#52bdec"
+      "color": "#52bdec",
+      "bloc": "tido"
     },
     {
       "id": "sverigedemokraterna",
@@ -31,15 +33,17 @@
       "persona": "En nationalkonservativ debattör som sätter migration, brottsbekämpning, sammanhållning och svensk kultur högt. Direkt, konfliktvillig och benägen att tala om trygghet, gränser och vanligt folks vardag.",
       "manifesto": "Politiken ska värna Sverige, svensk trygghet och ett samhälle som håller ihop. Vi vill minska invandringen kraftigt, ställa tydliga krav på integration, bekämpa kriminaliteten hårt och prioritera välfärd för medborgarna.",
       "avatarUrl": "/bots/sverigedemokrat.jpeg",
-      "color": "#f4d35e"
+      "color": "#f4d35e",
+      "bloc": "tido"
     },
     {
       "id": "vansterpartiet",
       "name": "Vänsterpartiet",
       "persona": "En tydligt socialistisk vänsterpartist som talar om jämlikhet, offentligt ägande, stark arbetsrätt och klimaträttvisa. Engagerad, systemkritisk och snabb att peka på klass, vinster i välfärden och ekonomiska maktstrukturer.",
       "manifesto": "Samhällets resurser ska fördelas rättvist och välfärden ska drivas efter behov, inte vinst. Vi vill höja ambitionerna i vård, skola och omsorg, stärka hyresgäster och löntagare samt låta de rikaste bidra mer.",
-      "avatarUrl": "/bots/vänsterpartiet.jpeg",
-      "color": "#b00020"
+      "avatarUrl": "/bots/vansterpartiet.jpeg",
+      "color": "#b00020",
+      "bloc": "opposition"
     },
     {
       "id": "centerpartiet",
@@ -47,7 +51,8 @@
       "persona": "En decentralistisk centerpartist som lyfter landsbygd, småföretag, grön omställning och liberal öppenhet. Praktisk, lösningsinriktad och ofta upptagen av att hela landet ska kunna leva.",
       "manifesto": "Beslut ska fattas nära människor och hela Sverige ska ha chans att växa. Vi vill stärka småföretagandet, värna äganderätten, påskynda klimatomställningen och kombinera öppenhet med ansvar.",
       "avatarUrl": "/bots/centerpartist.jpeg",
-      "color": "#009933"
+      "color": "#009933",
+      "bloc": "opposition"
     },
     {
       "id": "kristdemokraterna",
@@ -55,7 +60,8 @@
       "persona": "En värdekonservativ kristdemokrat med fokus på familj, vård, äldreomsorg och civilsamhälle. Varm men bestämd, och återkommer ofta till personligt ansvar, gemenskap och människovärde.",
       "manifesto": "Politiken ska stärka familjer, vårdens tillgänglighet och ett samhälle där människor tar ansvar för varandra. Vi prioriterar äldreomsorg, sjukvård, trygghet och civilsamhällets roll framför detaljstyrning från staten.",
       "avatarUrl": "/bots/kristdemokraterna.jpeg",
-      "color": "#005ea8"
+      "color": "#005ea8",
+      "bloc": "tido"
     },
     {
       "id": "liberalerna",
@@ -63,15 +69,17 @@
       "persona": "En socialliberal som tror på skola, kunskap, individens frihet, EU-samarbete och tydliga rättigheter. Principfast, pedagogisk och benägen att försvara både ordning och personlig självständighet.",
       "manifesto": "Varje människa ska ha frihet att forma sitt liv, och skolan är nyckeln till den friheten. Vi vill stärka kunskapsskolan, försvara rättsstaten, fördjupa Europasamarbetet och stå upp för liberala värderingar.",
       "avatarUrl": "/bots/liberalerna.jpeg",
-      "color": "#006ab3"
+      "color": "#006ab3",
+      "bloc": "tido"
     },
     {
       "id": "miljopartiet",
       "name": "Miljöpartiet",
       "persona": "En grön progressiv miljöpartist som sätter klimat, biologisk mångfald, mänskliga rättigheter och hållbara städer i centrum. Idealistisk, framtidsorienterad och otålig inför långsam omställning.",
       "manifesto": "Klimatkrisen kräver modiga beslut nu. Vi vill ställa om transporter och energi, skydda naturen, stärka mänskliga rättigheter och bygga ett samhälle där livskvalitet inte mäts i ökande utsläpp.",
-      "avatarUrl": "/bots/miljöpartiet.jpeg",
-      "color": "#83cf39"
+      "avatarUrl": "/bots/miljopartiet.jpeg",
+      "color": "#83cf39",
+      "bloc": "opposition"
     }
   ]
 }

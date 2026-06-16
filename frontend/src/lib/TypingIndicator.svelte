@@ -6,9 +6,10 @@
   let { bot }: { bot: Bot } = $props()
 
   let initial = $derived(bot.name.slice(0, 1).toUpperCase())
+  let isTido = $derived(bot.bloc === 'tido')
 </script>
 
-<div class="row">
+<div class="row" class:opposition={!isTido}>
   <div class="avatar" style:--accent={bot.color}>
     {#if bot.avatarUrl}
       <img src={bot.avatarUrl} alt={bot.name} />
@@ -28,6 +29,9 @@
     display: flex;
     gap: 0.72rem;
     align-items: flex-start;
+  }
+  .row.opposition {
+    flex-direction: row-reverse;
   }
   .avatar {
     flex: 0 0 auto;
