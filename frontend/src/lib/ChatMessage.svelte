@@ -8,6 +8,12 @@
   let initial = $derived(name.slice(0, 1).toUpperCase())
   let isTido = $derived(bot?.bloc === 'tido')
   let blocLabel = $derived(isTido ? 'Tidöavtalet' : 'Opposition')
+  let time = $derived(
+    new Date(message.ts).toLocaleTimeString('sv-SE', {
+      hour: '2-digit',
+      minute: '2-digit',
+    }),
+  )
 </script>
 
 <div class="row" class:tido={isTido} class:opposition={!isTido}>
@@ -24,6 +30,7 @@
       <span class="bloc-badge">{blocLabel}</span>
     </div>
     <div class="text">{message.text}</div>
+    <time class="ts">{time}</time>
   </div>
 </div>
 
@@ -124,6 +131,19 @@
     line-height: 1.48;
     white-space: pre-wrap;
     word-wrap: break-word;
+  }
+  .ts {
+    display: block;
+    margin-top: 0.32rem;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-faint, #8a99a8);
+    text-align: right;
+  }
+  .row.tido .ts {
+    text-align: left;
   }
   @media (max-width: 640px) {
     .bubble {

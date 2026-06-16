@@ -14,6 +14,10 @@
   let tido = $derived(debate.bots.filter((b) => b.bloc === 'tido'))
   let opposition = $derived(debate.bots.filter((b) => b.bloc !== 'tido'))
 
+  // Lightweight live metrics for the header stat cluster.
+  let participantCount = $derived(debate.bots.length)
+  let postCount = $derived(debate.messages.length)
+
   // Keep the chat pinned to the bottom as new messages / typing arrive.
   $effect(() => {
     // Touch reactive deps so this re-runs on change.
@@ -25,23 +29,41 @@
 
 <main>
   <header>
-    <img
-      class="banner"
-      src="/banner.png"
-      alt="AI Valdebatten — Sveriges största digitala valdebatt"
-    />
+    <div class="banner-wrap">
+      <img
+        class="banner"
+        src="/banner.jpeg"
+        alt="AI Valdebatten — Sveriges största digitala valdebatt"
+      />
+      <div class="banner-fade"></div>
+    </div>
     <div class="statusbar">
+      <div class="brand">
+        <span class="brand-mark">AV</span>
+        <span class="brand-name">AI&nbsp;Valdebatten</span>
+      </div>
       <span class="status" class:on={debate.connected}>
-        {debate.connected ? 'live' : 'offline'}
+        {debate.connected ? 'Live' : 'Offline'}
       </span>
     </div>
     <div class="head-text">
-      <div class="eyebrow">Sveriges digitala valdebatt</div>
+      <div class="eyebrow">Nuvarande ämne</div>
       <div class="topic">
         {debate.topic || 'Väntar på nästa debatt…'}
       </div>
-      <div class="meta">
-        Nästa ämne om <Countdown endsAt={debate.endsAt} />
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-value">{participantCount}</span>
+          <span class="stat-label">Deltagare</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{postCount}</span>
+          <span class="stat-label">Inlägg</span>
+        </div>
+        <div class="stat stat-timer">
+          <span class="stat-value"><Countdown endsAt={debate.endsAt} /></span>
+          <span class="stat-label">Nästa ämne</span>
+        </div>
       </div>
     </div>
   </header>
@@ -51,6 +73,7 @@
       <div class="bloc bloc-tido">
         <h2 class="bloc-title">
           <span class="bloc-dot"></span>Tidöavtalet
+          <span class="bloc-count">{tido.length}</span>
           <span class="bloc-sub">Regeringen</span>
         </h2>
         <div class="chips">
@@ -62,6 +85,7 @@
       <div class="bloc bloc-opposition">
         <h2 class="bloc-title">
           <span class="bloc-dot"></span>Oppositionen
+          <span class="bloc-count">{opposition.length}</span>
           <span class="bloc-sub">Utanför regeringen</span>
         </h2>
         <div class="chips">
@@ -116,32 +140,78 @@
     height: 4px;
     background: linear-gradient(90deg, var(--se-blue) 0 24%, var(--se-yellow) 24% 32%, var(--se-blue) 32%);
   }
+  .banner-wrap {
+    position: relative;
+    overflow: hidden;
+  }
   .banner {
     display: block;
     width: 100%;
-    height: auto;
-    max-height: 210px;
+    height: clamp(180px, 26vw, 260px);
     object-fit: cover;
+    object-position: center 42%;
+    transform: scale(1.01);
+  }
+  .banner-fade {
+    position: absolute;
+    inset: auto 0 0;
+    height: 38%;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.18) 55%,
+      rgba(255, 255, 255, 0.82) 100%
+    );
   }
   .statusbar {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
     padding: 0.9rem clamp(1rem, 2.5vw, 1.8rem) 0;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--display-font);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: linear-gradient(150deg, var(--se-blue) 0%, var(--se-blue-dark) 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25), 0 6px 14px rgba(0, 63, 115, 0.22);
+  }
+  .brand-name {
+    font-family: var(--display-font);
+    font-size: 0.86rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--se-blue-ink);
   }
   .status {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.4rem;
     font-family: var(--display-font);
-    font-size: 0.68rem;
-    font-weight: 700;
+    font-size: 0.66rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.13em;
     color: var(--text-muted);
     border: 1px solid rgba(99, 116, 135, 0.22);
     border-radius: 999px;
-    padding: 0.24rem 0.64rem;
-    background: rgba(255, 255, 255, 0.72);
+    padding: 0.26rem 0.66rem;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: var(--shadow-xs);
   }
   .status::before {
     content: '';
@@ -152,12 +222,17 @@
   }
   .status.on {
     color: #15803d;
-    border-color: rgba(34, 197, 94, 0.28);
-    background: rgba(240, 253, 244, 0.9);
+    border-color: rgba(34, 197, 94, 0.32);
+    background: rgba(240, 253, 244, 0.92);
   }
   .status.on::before {
     background: #22c55e;
     box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.14);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.32); }
+    50% { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.06); }
   }
   .head-text {
     position: relative;
@@ -193,10 +268,41 @@
     line-height: 0.96;
     color: var(--se-blue-ink);
   }
-  .meta {
-    margin-top: 0.65rem;
-    font-size: 0.88rem;
-    font-weight: 500;
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.85rem;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    min-width: 4.5rem;
+    padding: 0.45rem 0.85rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: var(--shadow-xs);
+  }
+  .stat-timer {
+    border-color: rgba(0, 106, 167, 0.28);
+    background: rgba(0, 106, 167, 0.06);
+  }
+  .stat-value {
+    font-family: var(--display-font);
+    font-size: 1.18rem;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--se-blue-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     color: var(--text-muted);
   }
 
@@ -230,16 +336,17 @@
     background: rgba(243, 247, 251, 0.76);
   }
   .bloc {
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     padding: 0.7rem 0.8rem 0.8rem;
     border: 1px solid transparent;
+    box-shadow: var(--shadow-xs);
   }
   .bloc-tido {
-    background: rgba(0, 90, 168, 0.07);
+    background: linear-gradient(180deg, rgba(0, 90, 168, 0.09), rgba(0, 90, 168, 0.04));
     border-color: rgba(0, 90, 168, 0.22);
   }
   .bloc-opposition {
-    background: rgba(237, 27, 52, 0.06);
+    background: linear-gradient(180deg, rgba(237, 27, 52, 0.07), rgba(237, 27, 52, 0.03));
     border-color: rgba(237, 27, 52, 0.2);
   }
   .bloc-title {
@@ -265,6 +372,20 @@
   }
   .bloc-opposition .bloc-dot {
     background: #ed1b34;
+  }
+  .bloc-count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.3rem;
+    height: 1.3rem;
+    padding: 0 0.35rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(8, 47, 73, 0.12);
+    color: var(--se-blue-ink);
   }
   .bloc-sub {
     margin-left: auto;
@@ -323,7 +444,7 @@
       border-radius: 0;
     }
     .banner {
-      max-height: 150px;
+      height: clamp(140px, 38vw, 180px);
     }
   }
 </style>

@@ -10,14 +10,28 @@
   --se-blue-ink: #082f49;
   --se-yellow: #fecc02;
   --se-yellow-soft: #fff4b8;
+  --se-red: #ed1b34;
   --page-bg: #eaf1f8;
   --surface: #ffffff;
   --surface-alt: #f3f7fb;
   --border: #d8e4ee;
+  --border-strong: #c2d3e2;
   --text: #172636;
   --text-muted: #637487;
+  --text-faint: #8a99a8;
   --display-font: 'Inter Tight', 'IBM Plex Sans', system-ui, sans-serif;
-  --shadow-soft: 0 24px 80px rgba(0, 63, 115, 0.16);
+
+  /* Elevation scale */
+  --shadow-xs: 0 1px 2px rgba(8, 47, 73, 0.06);
+  --shadow-sm: 0 4px 12px rgba(0, 63, 115, 0.07);
+  --shadow-md: 0 12px 30px rgba(0, 63, 115, 0.09);
+  --shadow-soft: 0 28px 80px rgba(0, 63, 115, 0.18);
+
+  /* Radius scale */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
 }
 
 * {
