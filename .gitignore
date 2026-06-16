@@ -1,0 +1,13 @@
+# Go
+/bin/
+*.out
+
+# Node / frontend
+frontend/node_modules/
+
+# Built frontend (artifact). Keep the dir present for go:embed via .gitkeep.
+internal/web/dist/*
+!internal/web/dist/.gitkeep
+
+# OS / editor
+.DS_Store
