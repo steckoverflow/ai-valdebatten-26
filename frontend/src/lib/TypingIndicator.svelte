@@ -35,7 +35,8 @@
     font-size: 0.9rem;
   }
   .bubble {
-    background: #1e293b;
+    background: var(--surface-alt, #eef3f8);
+    border: 1px solid var(--border, #d3dde8);
     border-left: 3px solid var(--accent);
     border-radius: 0 12px 12px 12px;
     padding: 0.7rem 0.85rem;

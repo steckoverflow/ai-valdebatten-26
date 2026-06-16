@@ -20,17 +20,23 @@
 
 <main>
   <header>
-    <div class="brand">
-      <span class="logo">⬢</span> aivaldebatten
+    <img
+      class="banner"
+      src="/banner.png"
+      alt="AI Valdebatten — Sveriges största digitala valdebatt"
+    />
+    <div class="statusbar">
       <span class="status" class:on={debate.connected}>
         {debate.connected ? 'live' : 'offline'}
       </span>
     </div>
-    <div class="topic">
-      {debate.topic || 'Waiting for the next debate…'}
-    </div>
-    <div class="meta">
-      next topic in <Countdown endsAt={debate.endsAt} />
+    <div class="head-text">
+      <div class="topic">
+        {debate.topic || 'Waiting for the next debate…'}
+      </div>
+      <div class="meta">
+        next topic in <Countdown endsAt={debate.endsAt} />
+      </div>
     </div>
   </header>
 
@@ -57,52 +63,71 @@
 
 <style>
   main {
-    width: min(720px, 100%);
+    width: min(960px, 100%);
     height: 100dvh;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    background: #0f172a;
+    background: var(--surface);
+    box-shadow: 0 0 40px rgba(0, 69, 122, 0.08);
   }
 
   header {
-    padding: 0.9rem 1rem 0.8rem;
-    border-bottom: 1px solid #1e293b;
-    background: #0b1222;
+    padding: 0;
+    border-bottom: 3px solid var(--se-yellow);
+    background: var(--surface);
   }
-  .brand {
+  .banner {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .statusbar {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #e2e8f0;
+    justify-content: flex-end;
+    padding: 0.6rem 1rem 0;
   }
-  .logo { color: #38bdf8; }
   .status {
-    margin-left: auto;
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #64748b;
-    border: 1px solid #334155;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
     border-radius: 999px;
     padding: 0.05rem 0.5rem;
   }
   .status.on {
-    color: #22c55e;
-    border-color: #14532d;
+    color: #15803d;
+    border-color: #86efac;
+    background: #f0fdf4;
+  }
+  .head-text {
+    padding: 0.4rem 1rem 0.8rem;
+    border-left: 4px solid var(--se-blue);
+    margin: 0 1rem;
   }
   .topic {
-    margin-top: 0.55rem;
     font-size: 1.15rem;
-    font-weight: 600;
-    color: #f8fafc;
+    font-weight: 700;
+    color: var(--se-blue);
   }
   .meta {
     margin-top: 0.25rem;
     font-size: 0.8rem;
-    color: #64748b;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 640px) {
+    .statusbar {
+      padding: 0.45rem 0.8rem 0;
+    }
+    .head-text {
+      padding: 0.35rem 0.8rem 0.6rem;
+      margin: 0 0.8rem;
+    }
+    .topic {
+      font-size: 1rem;
+    }
   }
 
   .roster {
@@ -110,12 +135,14 @@
     flex-wrap: wrap;
     gap: 0.4rem;
     padding: 0.6rem 1rem;
-    border-bottom: 1px solid #1e293b;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-alt);
   }
   .chip {
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--c);
+    background: var(--surface);
     border: 1px solid var(--c);
     border-radius: 999px;
     padding: 0.1rem 0.55rem;
@@ -133,7 +160,7 @@
   }
   .empty {
     margin: auto;
-    color: #475569;
+    color: var(--text-muted);
     font-style: italic;
   }
 </style>

@@ -25,7 +25,7 @@
 <style>
   .countdown {
     font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    color: #cbd5e1;
+    font-weight: 700;
+    color: var(--se-blue, #006aa7);
   }
 </style>
